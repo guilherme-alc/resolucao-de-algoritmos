@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34525.116
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SomaElementosVetor", "SomaElementosVetor.csproj", "{A221491E-CEF3-4FDC-91F5-02129AF29980}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A221491E-CEF3-4FDC-91F5-02129AF29980}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A221491E-CEF3-4FDC-91F5-02129AF29980}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A221491E-CEF3-4FDC-91F5-02129AF29980}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A221491E-CEF3-4FDC-91F5-02129AF29980}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1A017D32-E0F3-416F-9DEE-244265E8B0C1}
+	EndGlobalSection
+EndGlobal
