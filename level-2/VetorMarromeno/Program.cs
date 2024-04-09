@@ -1,32 +1,33 @@
-﻿namespace VetorMarromeno
+﻿using System;
+internal class Program
 {
-    internal class Program
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
+        int qtdDeLinhas = int.Parse(Console.ReadLine());
+        Repeticao(qtdDeLinhas);
+    }
+
+    static void Repeticao(int qtdDeLinhas)
+    {
+        if(qtdDeLinhas > 0)
         {
-            int qtdDeLinhas = int.Parse(Console.ReadLine());
-            Repeticao(qtdDeLinhas);
+            string [] sequenciaDeNumeros = Console.ReadLine().Split(" ");
+            int tamanho = sequenciaDeNumeros.Length;
+
+            InverteOrdem(sequenciaDeNumeros, tamanho);
+            Console.WriteLine();
+
+            Repeticao(qtdDeLinhas - 1);
         }
+    }
 
-        static void Repeticao(int qtdDeLinhas)
+    static void InverteOrdem(string [] sequencia, int tamanho)
+    {
+        if(tamanho != 0)
         {
-            if(qtdDeLinhas > 0)
-            {
-                string [] sequenciaDeNumeros = Console.ReadLine().Split(" ");
-                int tamanho = sequenciaDeNumeros.Length;
-
-                InverteOrdem(sequenciaDeNumeros, tamanho);
-                Repeticao(qtdDeLinhas - 1);
-            }
-        }
-
-        static void InverteOrdem(string [] sequencia, int tamanho)
-        {
-            if(tamanho != 0)
-            {
-                Console.Write(sequencia[tamanho -1] + " ");
-                InverteOrdem(sequencia, tamanho - 1);
-            }
+            Console.Write(sequencia[tamanho -1] + " ");
+            InverteOrdem(sequencia, tamanho - 1);
         }
     }
 }
+
