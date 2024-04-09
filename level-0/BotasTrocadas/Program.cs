@@ -4,27 +4,31 @@
     {
         static void Main(string[] args)
         {
-            int botaDireita = 0;
-            int botaEsquerda = 0;
-            int parDeBotas = 0;
-            int numBotas = int.Parse(Console.ReadLine());
-            string[,] listaBotas = new string[numBotas, 2];
-            for (int i = 0; i < numBotas; i++) 
+            int [] botasEsquerda = new int[61], botasDireita = new int[61];
+
+            int qtdBotas = int.Parse(Console.ReadLine());
+            for (int i = 0; i < qtdBotas; i++) 
             {
                 string [] bota = Console.ReadLine().Split(" ");
-                for(int j = 0; j < 2; j++)
+                int tamanhoDaBota = int.Parse(bota[0]);
+                string ladoDaBota = bota[1];
+
+                if(ladoDaBota == "E")
                 {
-                    listaBotas[i, j] = bota[j];
+                    botasEsquerda[tamanhoDaBota] += 1;
+                } else
+                {
+                    botasDireita[tamanhoDaBota] += 1;
                 }
             }
-            for (int j = 0; j < numBotas; j++)
+
+            int paresFormados = 0;
+
+            for(int i = 0; i < 61; i++)
             {
-                for(int k = 0; k < 2; k++)
-                {
-                    Console.Write($"{listaBotas[j, k]} ");
-                }
-                Console.WriteLine();
+                paresFormados += botasEsquerda[i] > botasDireita[i] ? botasDireita[i] : botasEsquerda[i];
             }
+            Console.WriteLine(paresFormados);
         }
     }
 }
