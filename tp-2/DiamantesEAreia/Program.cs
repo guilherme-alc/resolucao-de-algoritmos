@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 internal class Program
 {
     static void Main(string[] args)
@@ -7,26 +6,22 @@ internal class Program
         int qtdCasosTeste = Convert.ToInt32(Console.ReadLine());
         for(int i = 0; i < qtdCasosTeste; i++)
         {
-            string escavacao = Console.ReadLine();
-            ArrayList ladoDireito = new ArrayList();
-            ArrayList ladoEsquerdo = new ArrayList();
+            string escavacao = Console.ReadLine().Replace(".", "");
+            int ladoEsquerdo = 0;
             int qtdDiamantes = 0;
             for(int j = 0; j < escavacao.Length; j++)
             {
                 if (escavacao[j] == '<')
                 {
-                    ladoDireito.Add(escavacao[j]);
+                    ladoEsquerdo++;
                 } else if (escavacao[j] == '>')
                 {
-                    ladoEsquerdo.Add(escavacao[j]);
+                    if(ladoEsquerdo > 0)
+                    {
+                        qtdDiamantes++;
+                        ladoEsquerdo--;
+                    }
                 }
-            }
-            if(ladoEsquerdo.Count >= ladoDireito.Count)
-            {
-                qtdDiamantes = ladoDireito.Count;
-            } else
-            {
-                qtdDiamantes = ladoEsquerdo.Count;
             }
             Console.WriteLine(qtdDiamantes);
         }
