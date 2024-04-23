@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 internal class Program
 {
     static void Main(string[] args)
@@ -25,18 +26,34 @@ internal class Program
             }
             if(qtdCasoTeste != 0)
             {
-                string estrutua = "";
-                if (numerosEntrada[0] == numerosSaida[0])
+                int fila = 0;
+                int stack = 0;
+                int lista = 0;
+                for(int i = 0, x = numerosEntrada.Count - 1 ;i < numerosEntrada.Count ;i++) 
                 {
-                    estrutua = "queue";
-                } else if (numerosEntrada[0] == numerosSaida[numerosSaida.Count -1] && numerosSaida[0] == numerosEntrada[numerosEntrada.Count -1])
-                {
-                    estrutua = "stack";
-                } else
-                {
-                    estrutua = "list";
+                    if (numerosEntrada[i] == numerosSaida[i])
+                    {
+                        fila++;
+                    } else if (numerosEntrada[i] == numerosSaida[x] && numerosSaida[0] == numerosEntrada[numerosEntrada.Count - 1])
+                    {
+                        stack++;
+                        x--;
+                    } else
+                    {
+                        lista++;
+                    }
                 }
-                Console.WriteLine(estrutua);
+
+                if(fila == numerosEntrada.Count)
+                {
+                    Console.WriteLine("queue");
+                } else if (stack == numerosEntrada.Count)
+                {
+                    Console.WriteLine("stack");
+                } else if (lista == numerosEntrada.Count)
+                {
+                    Console.WriteLine("list");
+                }
             }
         }
     }
