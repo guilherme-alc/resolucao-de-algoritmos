@@ -44,19 +44,27 @@ namespace Questao21
                 Console.Write("Digite o número da matrícula: ");
                 string entrada = Console.ReadLine();
 
-                if (int.TryParse(entrada, out matricula))
+                if (int.TryParse(entrada, out matricula) && matricula >= 0)
                 {
-                    if(matricula >= 0)
+                    if(!alunos.Contains(matricula))
                     {
                         Console.Write("Digite o nome do aluno: ");
                         string nome = Console.ReadLine();
                         alunos.Add(matricula, nome);
-                        Console.WriteLine($"Aluno {nome} foi cadastrado!\n");
+                        Console.WriteLine($"\nAluno {nome} foi cadastrado!\n");
                     }
+                    else
+                    {
+                        Console.WriteLine("\nEsta matrícula já esta cadastrada\n");
+                    }
+                }
+                else if (matricula < 0)
+                {
+                    Console.WriteLine("\nVocê será redirecionado para o menu");
                 }
                 else
                 {
-                    Console.WriteLine("Matrícula inválida");
+                    Console.WriteLine("\nMatrícula inválida\n");
                 }
             } while (matricula >= 0);
         }
