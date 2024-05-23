@@ -10,7 +10,13 @@
             RQ.Enqueue("Pedro");
             RQ.Enqueue("Camila");
             RQ.Enqueue("Roberto");
+            RQ.Enqueue("Priscila");
+            RQ.Enqueue("Fernanda");
+            RQ.Enqueue("Alvarez");
+            RQ.Enqueue("Humberto");
+            RQ.Imprimir();
             Console.WriteLine(RQ.Dequeue());
+            RQ.Imprimir();
         }
     }
     internal class RandomQueue
@@ -18,6 +24,7 @@
         public CCelula Frente;
         public CCelula Tras;
         private int _qtd = 0;
+        private Random _rnd = new Random();
         public RandomQueue()
         {
             Frente = new CCelula();
@@ -39,10 +46,8 @@
             {
                 CCelula aux = Frente;
                 bool achou = false;
-                Random rnd = new Random();
-                int indiceAleatorio = rnd.Next(0, _qtd);
+                int indiceAleatorio = _rnd.Next(0, _qtd);
                 int indice = 0;
-                Console.WriteLine(indiceAleatorio);
                 while (aux.Prox != null && !achou)
                 {
                     achou = indice.Equals(indiceAleatorio);
@@ -52,7 +57,7 @@
                         indice++;
                     }
                 }
-                Object aux2 = aux.Prox.Item;
+                Object itemRemovido = aux.Prox.Item;
 
                 aux.Prox = aux.Prox.Prox;
                 if(aux.Prox == null)
@@ -61,7 +66,7 @@
                 }
                 _qtd--;
 
-                return aux2;
+                return itemRemovido;
             } else
             {
                 return null;
@@ -72,10 +77,8 @@
             if(Frente != Tras)
             {
                 bool achou = false;
-                Random rnd = new Random();
-                int indiceAleatorio = rnd.Next(0, _qtd);
+                int indiceAleatorio = _rnd.Next(0, _qtd);
                 int indice = 0;
-                Console.WriteLine(indiceAleatorio);
                 CCelula aux = Frente;
                 for (; aux.Prox != null && !achou; aux = aux.Prox)
                 {
@@ -88,6 +91,15 @@
             {
                 return null;
             }
+        }
+        public void Imprimir ()
+        {
+            Console.Write("[ ");
+            for(CCelula aux = Frente.Prox; aux != null; aux = aux.Prox)
+            {
+                Console.Write(aux.Item + " ");
+            }
+            Console.Write("]");
         }
     }
     internal class CCelula
