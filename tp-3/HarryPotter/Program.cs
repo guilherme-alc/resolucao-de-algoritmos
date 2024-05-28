@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 internal class Program
 {
     static void Main(string[] args)
     {
         Personagem [] vetorPersonagens = ConstroiPersonagem();
-        List<Personagem> lista = new List<Personagem>();
-        Queue<Personagem> fila = new Queue<Personagem>();
-        Stack<Personagem> pilha = new Stack<Personagem>();
+        CLista lista = new CLista();
+        CFila fila = new CFila();
+        CPilha pilha = new CPilha();
         ExecutaComando(vetorPersonagens, lista, fila, pilha);
     }
     public static Personagem [] ConstroiPersonagem ()
@@ -23,7 +22,7 @@ internal class Program
         return vetorTemp;
     }
 
-    public static void ExecutaComando (Personagem [] vetorPersonagens, List<Personagem> lista, Queue<Personagem> fila, Stack<Personagem> pilha)
+    public static void ExecutaComando(Personagem[] vetorPersonagens, CLista lista, CFila fila, CPilha pilha)
     {
         int qtdComandos = int.Parse(Console.ReadLine());
         for (int j = 0; j < qtdComandos; j++)
@@ -31,28 +30,61 @@ internal class Program
             string[] comando = Console.ReadLine().Split(";");
             string instrucao = comando[0];
             string parametro = comando[1];
-            switch(instrucao)
+            switch (instrucao)
             {
                 case "Empi":
+                    for (int i = 0; i < vetorPersonagens.Length; i++)
+                    {
+                        if (vetorPersonagens[i].ConsultaIdade(parametro))
+                        {
+                            pilha.Empi(vetorPersonagens[i]);
+                        }
+                    }
                     break;
                 case "Enfi":
+                    for (int i = 0; i < vetorPersonagens.Length; i++)
+                    {
+                        if (vetorPersonagens[i].ConsultaIdade(parametro))
+                        {
+                            fila.Enfi(vetorPersonagens[i]);
+                        }
+                    }
                     break;
                 case "InsIni":
+                    for (int i = 0; i < vetorPersonagens.Length; i++)
+                    {
+                        if (vetorPersonagens[i].ConsultaIdade(parametro))
+                        {
+                            lista.InsIni(vetorPersonagens[i]);
+                        }
+                    }
                     break;
                 case "InsFim":
+                    for (int i = 0; i < vetorPersonagens.Length; i++)
+                    {
+                        if (vetorPersonagens[i].ConsultaIdade(parametro))
+                        {
+                            lista.InsFim(vetorPersonagens[i]);
+                        }
+                    }
                     break;
                 case "Desempi":
-                    int quantidade = parametro == "all" ? lista.Count : int.Parse(parametro);
+                    pilha.Desempi(parametro);
                     break;
                 case "Desenfi":
+                    fila.Desenfi(parametro);
                     break;
                 case "RemComec":
+                    lista.RemComec(parametro);
                     break;
                 case "RemFim":
+                    lista.RemFim(parametro);
                     break;
                 case "TemCPil":
+                    pilha.TemCPil(parametro);
                     break;
                 case "TemCFil":
+                    fila.TemCFil(parametro);
                     break;
                 default:
                     break;
@@ -101,6 +133,15 @@ internal class Personagem
         }
         return true;
     }
+
+    public bool ConsultaIdade (string anoNascimento)
+    {
+        if(this.anoNascimento != int.Parse(anoNascimento))
+        {
+            return false;
+        }
+        return true;
+    }
 }
 
 internal class CCelula
@@ -128,53 +169,75 @@ internal class CFila
 {
     private CCelula Frente;
     private CCelula Tras;
-    private int Qtd = 0;
+    private int _qtd = 0;
+
     public CFila()
     {
         Frente = new CCelula();
         Tras = Frente;
     }
-    public void Enqueue (object item)
+
+    public void Enfi(object item)
     {
         Tras.Prox = new CCelula(item);
         Tras = Tras.Prox;
-        Qtd++;
+        _qtd++;
     }
-    public object Dequeue ()
+
+    public void Desenfi(string parametro)
     {
         Object item = null;
-        if(Frente != Tras)
+        if (Frente != Tras)
         {
-            Frente = Frente.Prox;
-            item = Frente.Item;
-            Qtd--;
+            if (parametro.Equals("all"))
+            {
+                while (Frente.Prox != null)
+                {
+                    Frente = Frente.Prox;
+                    item = Frente.Item;
+                    Console.WriteLine(item.ToString());
+                    _qtd--;
+                }
+                Tras = Frente;
+            }
+            else
+            {
+                int quantidade = int.Parse(parametro);
+                while (quantidade > 0 && Frente != Tras)
+                {
+                    Frente = Frente.Prox;
+                    item = Frente.Item;
+                    Console.WriteLine(item.ToString());
+                    _qtd--;
+                    quantidade--;
+                }
+                if (Frente == Tras)
+                {
+                    Tras = Frente;
+                }
+            }
         }
-        return item;
     }
-    public bool IsEmpty ()
-    {
-        return Frente == Tras;
-    }
-    public object Peek()
-    {
-        if(Frente != Tras)
-        {
-            return Frente.Prox.Item;
-        } else
-        {
-            return null;
-        }
-    }
-    public bool Contains (object ValorItem)
+
+    public void TemCFil(string nome)
     {
         bool contem = false;
         CCelula aux = Frente.Prox;
+        Personagem personagem;
         while (aux != null && !contem)
         {
-            contem = aux.Item.Equals(ValorItem);
+            personagem = (Personagem)aux.Item;
+            contem = personagem.ConsultaNome(nome);
             aux = aux.Prox;
         }
-        return contem;
+        if (contem)
+        {
+            Console.WriteLine($"{nome} Ok");
+        }
+        else
+        {
+            Console.WriteLine($"{nome} Nada");
+        }
     }
 
     public bool ContainsWithFor(Object ValorItem)
@@ -183,11 +246,6 @@ internal class CFila
         for (CCelula aux = Frente.Prox; aux != null && !contem; aux = aux.Prox)
             contem = aux.Item.Equals(ValorItem);
         return contem;
-    }
-
-    public int Count ()
-    {
-        return Qtd;
     }
 
     public void Print()
@@ -199,69 +257,182 @@ internal class CFila
     }
 }
 
+
 internal class CPilha
 {
     public CCelula Topo = null;
     private int _count = 0;
-    public CPilha()
-    {
 
-    }
-    public void Push (Object item)
+    public CPilha() { }
+
+    public void Empi(Object item)
     {
         Topo = new CCelula(item, Topo);
         _count++;
     }
-    public object Pop ()
+
+    public void Desempi(string parametro)
     {
         Object item = null;
-        if(Topo != null)
+        if (Topo != null)
         {
-            item = Topo.Item;
-            Topo = Topo.Prox;
-            _count--;
+            if (parametro.Equals("all"))
+            {
+                while (Topo != null)
+                {
+                    item = Topo.Item;
+                    Console.WriteLine(item.ToString());
+                    Topo = Topo.Prox;
+                    _count--;
+                }
+            }
+            else
+            {
+                int quantidade = int.Parse(parametro);
+                while (quantidade > 0 && Topo != null)
+                {
+                    item = Topo.Item;
+                    Console.WriteLine(item.ToString());
+                    Topo = Topo.Prox;
+                    _count--;
+                    quantidade--;
+                }
+            }
         }
-        return item;
     }
-    public bool IsEmpty()
-    {
-        return Topo == null;
-    }
-    public bool Contains (Object item)
+
+    public void TemCPil(string nome)
     {
         bool contem = false;
         CCelula aux = Topo;
+        Personagem personagem;
 
         while(aux != null && !contem)
         {
-            contem = aux.Item.Equals(item);
+            personagem = (Personagem)aux.Item;
+            contem = personagem.ConsultaNome(nome);
             aux = aux.Prox;
         }
-
-        return contem;
-    }
-    public bool ContainsWithFor(Object item)
-    {
-        bool contem = false;
-        for(CCelula aux = Topo; aux != null && !contem; aux = aux.Prox)
+        if (contem)
         {
-            contem = aux.Item.Equals(item);
-        }
-        return contem;
-    }
-    public object Peek()
-    {
-        if(Topo != null)
-        {
-            return Topo.Item;
+            Console.WriteLine($"{nome} Ok");
         }
         else
         {
-            return null;
+            Console.WriteLine($"{nome} Nada");
         }
     }
-    public int Count()
+
+    public bool ContainsWithFor(Object item)
     {
-        return _count;
+        bool contem = false;
+        for (CCelula aux = Topo; aux != null && !contem; aux = aux.Prox)
+        {
+            contem = aux.Item.Equals(item);
+        }
+        return contem;
     }
 }
+
+internal class CLista
+{
+    public CCelula Primeira;
+    public CCelula Ultima;
+    private int _qtd = 0;
+
+    public CLista()
+    {
+        Primeira = new CCelula();
+        Ultima = Primeira;
+    }
+
+    public void InsIni(Object item)
+    {
+        CCelula nova = new CCelula(item, Primeira.Prox);
+        Primeira.Prox = nova;
+        if (Ultima == Primeira)
+        {
+            Ultima = nova;
+        }
+        _qtd++;
+    }
+
+    public void InsFim(Object item)
+    {
+        Ultima.Prox = new CCelula(item);
+        Ultima = Ultima.Prox;
+        _qtd++;
+    }
+
+    public void RemFim(string parametro)
+    {
+        if (Primeira != Ultima)
+        {
+            if (parametro.Equals("all"))
+            {
+                while (Primeira != Ultima)
+                {
+                    CCelula aux = Primeira;
+                    while (aux.Prox != Ultima)
+                    {
+                        aux = aux.Prox;
+                    }
+                    Console.WriteLine(Ultima.Item.ToString());
+                    Ultima = aux;
+                    Ultima.Prox = null;
+                    _qtd--;
+                }
+            }
+            else
+            {
+                int quantidade = int.Parse(parametro);
+                while (quantidade > 0 && _qtd > 0)
+                {
+                    CCelula aux = Primeira;
+                    while (aux.Prox != Ultima)
+                    {
+                        aux = aux.Prox;
+                    }
+                    Console.WriteLine(Ultima.Item.ToString());
+                    Ultima = aux;
+                    Ultima.Prox = null;
+                    _qtd--;
+                    quantidade--;
+                }
+            }
+        }
+    }
+
+    public void RemComec(string parametro)
+    {
+        if (Primeira != Ultima)
+        {
+            if (parametro.Equals("all"))
+            {
+                while (Primeira != Ultima)
+                {
+                    Primeira = Primeira.Prox;
+                    Console.WriteLine(Primeira.Item.ToString());
+                    _qtd--;
+                }
+                Ultima = Primeira;
+            }
+            else
+            {
+                int quantidade = int.Parse(parametro);
+                while (quantidade > 0 && Primeira != Ultima)
+                {
+                    Primeira = Primeira.Prox;
+                    Console.WriteLine(Primeira.Item.ToString());
+                    _qtd--;
+                    quantidade--;
+                }
+                if (Primeira == Ultima)
+                {
+                    Ultima = Primeira;
+                }
+            }
+        }
+    }
+}
+
