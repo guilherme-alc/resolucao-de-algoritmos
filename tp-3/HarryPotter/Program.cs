@@ -167,53 +167,53 @@ internal class CCelula
 
 internal class CFila
 {
-    private CCelula Frente;
-    private CCelula Tras;
-    private int _qtd = 0;
+    private CCelula frente;
+    private CCelula tras;
+    private int qtd = 0;
 
     public CFila()
     {
-        Frente = new CCelula();
-        Tras = Frente;
+        frente = new CCelula();
+        tras = frente;
     }
 
     public void Enfi(object item)
     {
-        Tras.Prox = new CCelula(item);
-        Tras = Tras.Prox;
-        _qtd++;
+        tras.Prox = new CCelula(item);
+        tras = tras.Prox;
+        qtd++;
     }
 
     public void Desenfi(string parametro)
     {
         Object item = null;
-        if (Frente != Tras)
+        if (frente != tras)
         {
             if (parametro.Equals("all"))
             {
-                while (Frente.Prox != null)
+                while (frente.Prox != null)
                 {
-                    Frente = Frente.Prox;
-                    item = Frente.Item;
+                    frente = frente.Prox;
+                    item = frente.Item;
                     Console.WriteLine(item.ToString());
-                    _qtd--;
+                    qtd--;
                 }
-                Tras = Frente;
+                tras = frente;
             }
             else
             {
                 int quantidade = int.Parse(parametro);
-                while (quantidade > 0 && Frente != Tras)
+                while (quantidade > 0 && frente != tras && quantidade < qtd)
                 {
-                    Frente = Frente.Prox;
-                    item = Frente.Item;
+                    frente = frente.Prox;
+                    item = frente.Item;
                     Console.WriteLine(item.ToString());
-                    _qtd--;
+                    qtd--;
                     quantidade--;
                 }
-                if (Frente == Tras)
+                if (frente == tras)
                 {
-                    Tras = Frente;
+                    tras = frente;
                 }
             }
         }
@@ -222,7 +222,7 @@ internal class CFila
     public void TemCFil(string nome)
     {
         bool contem = false;
-        CCelula aux = Frente.Prox;
+        CCelula aux = frente.Prox;
         Personagem personagem;
         while (aux != null && !contem)
         {
@@ -239,62 +239,46 @@ internal class CFila
             Console.WriteLine($"{nome} Nada");
         }
     }
-
-    public bool ContainsWithFor(Object ValorItem)
-    {
-        bool contem = false;
-        for (CCelula aux = Frente.Prox; aux != null && !contem; aux = aux.Prox)
-            contem = aux.Item.Equals(ValorItem);
-        return contem;
-    }
-
-    public void Print()
-    {
-        Console.Write("[ ");
-        for (CCelula aux = Frente.Prox; aux != null; aux = aux.Prox)
-            Console.Write(aux.Item + " ");
-        Console.WriteLine("]");
-    }
 }
 
 
 internal class CPilha
 {
-    public CCelula Topo = null;
-    private int _count = 0;
+    private CCelula topo = null;
+    private int qtde = 0;
 
     public CPilha() { }
 
     public void Empi(Object item)
     {
-        Topo = new CCelula(item, Topo);
-        _count++;
+        topo = new CCelula(item, topo);
+        qtde++;
     }
 
     public void Desempi(string parametro)
     {
         Object item = null;
-        if (Topo != null)
+        if (topo != null)
         {
             if (parametro.Equals("all"))
             {
-                while (Topo != null)
+                while (topo != null)
                 {
-                    item = Topo.Item;
+                    item = topo.Item;
                     Console.WriteLine(item.ToString());
-                    Topo = Topo.Prox;
-                    _count--;
+                    topo = topo.Prox;
+                    qtde--;
                 }
             }
             else
             {
                 int quantidade = int.Parse(parametro);
-                while (quantidade > 0 && Topo != null)
+                while (quantidade > 0 && topo != null && quantidade < qtde)
                 {
-                    item = Topo.Item;
+                    item = topo.Item;
                     Console.WriteLine(item.ToString());
-                    Topo = Topo.Prox;
-                    _count--;
+                    topo = topo.Prox;
+                    qtde--;
                     quantidade--;
                 }
             }
@@ -304,7 +288,7 @@ internal class CPilha
     public void TemCPil(string nome)
     {
         bool contem = false;
-        CCelula aux = Topo;
+        CCelula aux = topo;
         Personagem personagem;
 
         while(aux != null && !contem)
@@ -322,81 +306,71 @@ internal class CPilha
             Console.WriteLine($"{nome} Nada");
         }
     }
-
-    public bool ContainsWithFor(Object item)
-    {
-        bool contem = false;
-        for (CCelula aux = Topo; aux != null && !contem; aux = aux.Prox)
-        {
-            contem = aux.Item.Equals(item);
-        }
-        return contem;
-    }
 }
 
 internal class CLista
 {
-    public CCelula Primeira;
-    public CCelula Ultima;
-    private int _qtd = 0;
+    private CCelula primeira;
+    private CCelula ultima;
+    private int qtd = 0;
 
     public CLista()
     {
-        Primeira = new CCelula();
-        Ultima = Primeira;
+        primeira = new CCelula();
+        ultima = primeira;
     }
 
     public void InsIni(Object item)
     {
-        CCelula nova = new CCelula(item, Primeira.Prox);
-        Primeira.Prox = nova;
-        if (Ultima == Primeira)
+        CCelula nova = new CCelula(item, primeira.Prox);
+        primeira.Prox = nova;
+        if (ultima == primeira)
         {
-            Ultima = nova;
+            ultima = nova;
         }
-        _qtd++;
+        qtd++;
     }
 
     public void InsFim(Object item)
     {
-        Ultima.Prox = new CCelula(item);
-        Ultima = Ultima.Prox;
-        _qtd++;
+        ultima.Prox = new CCelula(item);
+        ultima = ultima.Prox;
+        qtd++;
     }
 
     public void RemFim(string parametro)
     {
-        if (Primeira != Ultima)
+        if (primeira != ultima)
         {
             if (parametro.Equals("all"))
             {
-                while (Primeira != Ultima)
+                while (primeira != ultima)
                 {
-                    CCelula aux = Primeira;
-                    while (aux.Prox != Ultima)
+                    CCelula aux = primeira;
+                    while (aux.Prox != ultima)
                     {
                         aux = aux.Prox;
                     }
-                    Console.WriteLine(Ultima.Item.ToString());
-                    Ultima = aux;
-                    Ultima.Prox = null;
-                    _qtd--;
+                    Console.WriteLine(ultima.Item.ToString());
+                    ultima = aux;
+                    ultima.Prox = null;
+                    qtd--;
                 }
             }
             else
             {
                 int quantidade = int.Parse(parametro);
-                while (quantidade > 0 && _qtd > 0)
+                while (quantidade > 0 && qtd > 0)
                 {
-                    CCelula aux = Primeira;
-                    while (aux.Prox != Ultima)
+                    CCelula aux = primeira;
+                    while (aux.Prox != ultima)
                     {
                         aux = aux.Prox;
                     }
-                    Console.WriteLine(Ultima.Item.ToString());
-                    Ultima = aux;
-                    Ultima.Prox = null;
-                    _qtd--;
+                    Console.WriteLine(ultima.Item.ToString());
+                    ultima = aux;
+                    ultima.Prox = null;
+                    qtd--;
                     quantidade--;
                 }
             }
@@ -405,31 +379,31 @@ internal class CLista
 
     public void RemComec(string parametro)
     {
-        if (Primeira != Ultima)
+        if (primeira != ultima)
         {
             if (parametro.Equals("all"))
             {
-                while (Primeira != Ultima)
+                while (primeira != ultima)
                 {
-                    Primeira = Primeira.Prox;
-                    Console.WriteLine(Primeira.Item.ToString());
-                    _qtd--;
+                    primeira = primeira.Prox;
+                    Console.WriteLine(primeira.Item.ToString());
+                    qtd--;
                 }
-                Ultima = Primeira;
+                ultima = primeira;
             }
             else
             {
                 int quantidade = int.Parse(parametro);
-                while (quantidade > 0 && Primeira != Ultima)
+                while (quantidade > 0 && primeira != ultima)
                 {
-                    Primeira = Primeira.Prox;
-                    Console.WriteLine(Primeira.Item.ToString());
-                    _qtd--;
+                    primeira = primeira.Prox;
+                    Console.WriteLine(primeira.Item.ToString());
+                    qtd--;
                     quantidade--;
                 }
-                if (Primeira == Ultima)
+                if (primeira == ultima)
                 {
-                    Ultima = Primeira;
+                    ultima = primeira;
                 }
             }
         }
